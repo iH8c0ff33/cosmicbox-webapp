@@ -13,7 +13,7 @@
             true,
             "check-space"
         ],
-        "curly": true,
+        // "curly": true,
         "eofline": false,
         "forin": true,
         "indent": [ true, "spaces" ],
@@ -61,9 +61,9 @@
             "check-open-brace",
             "check-whitespace"
         ],
-        "quotemark": [true, "single", "jsx-double"],
+        "quotemark": [true, "double", "avoid-escape"],
         "radix": true,
-        "semicolon": [true, "always"],
+        "semicolon": [true, "never"],
         "switch-default": true,
 
         "trailing-comma": [false],
