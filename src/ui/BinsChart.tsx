@@ -40,7 +40,8 @@ export class BinsChart extends React.Component<BinsChartProps, BinsChartState> {
         return (
             <div style={{ marginTop: "1.5em" }}>
                 <ResponsiveContainer width="100%" height={200}>
-                    <BarChart style={{ marginLeft: "-1.3em" }}
+                    <BarChart
+                        style={{ marginLeft: "-1.3em" }}
                         // margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
                         data={this.state.bins.map(i => { return { start: i.start.toLocaleString(), count: i.count } })}
                     >
