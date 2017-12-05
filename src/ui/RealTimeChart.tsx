@@ -50,7 +50,7 @@ export class RealTimeChart extends React.Component<Props, State> {
                         <YAxis dataKey="count" />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="count" fill="#F46524" />
+                        <Bar dataKey="count" fill="#607d8b" />
                     </BarChart>
                 </ResponsiveContainer>
                 <Slider
@@ -62,10 +62,6 @@ export class RealTimeChart extends React.Component<Props, State> {
                     value={this.state.sliderValue}
                 // vertical={vertical}
                 />
-                <p>{this.state.sliderValue}</p>
-                <p>{this.state.error != null ?
-                    this.state.error.name :
-                    JSON.stringify(this.state.bins.map(i => i.start.toLocaleString()))}</p>
             </div>
         )
     }

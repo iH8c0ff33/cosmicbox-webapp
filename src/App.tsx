@@ -2,8 +2,7 @@ import * as React from "react"
 import "./App.css"
 
 import { RealTimeChart } from "./ui/RealTimeChart"
-// import { BinsChart } from "./ui/BinsChart";
-// import { Button } from "@blueprintjs/core"
+import { BinsChart } from "./ui/BinsChart"
 
 class App extends React.Component {
   render() {
@@ -17,7 +16,7 @@ class App extends React.Component {
         <div className="container">
           <h2>Something</h2>
           <RealTimeChart sample="30s" stop={new Date("2017/12/06")} />
-          {/* <BinsChart /> */}
+          <BinsChart />
         </div>
       </div>
     )

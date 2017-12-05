@@ -1,11 +1,22 @@
 import * as React from "react"
-import { BarChart, ResponsiveContainer } from "recharts"
+import { BarChart, ResponsiveContainer, CartesianGrid, Bar, Tooltip, XAxis } from "recharts"
 import { getEventBins } from "../api/event"
+import { Slider } from "@blueprintjs/core"
+
+function countMap(iter: number[]): Map<number, number> {
+    const map = new Map<number, number>()
+
+    for (let x of iter) {
+        map.set(x, (map.get(x) || 0) + 1)
+    }
+
+    return new Map(Array.from(map).sort((a, b) => a[0] - b[0]))
+}
 
 interface State {
-    rate: number[]
-    count: number[]
+    data: Map<number, number>
     sliderValue: number
+    error: Error
 }
 
 export class BinsChart extends React.Component<{}, State> {
@@ -16,29 +27,37 @@ export class BinsChart extends React.Component<{}, State> {
             new Date()
         )
             .then(bins => {
-                let prev
-                const rate = new Array<number>()
-                const count = new Array<number>()
-                const counts = bins.map(i => i.count).sort()
-
-                for (let i = 0; i < counts.length; i++) {
-                    if (counts[i] !== prev) {
-                        rate.push(counts[i])
-                        
-                    }
-                }
-
-                this.setState({ ...this.state, bins: bins.slice(1) })
-                setTimeout(() => this.getEvents(), 300)
+                this.setState({ ...this.state, data: countMap(bins.map(x => x.count)) })
             })
             .catch(error => this.setState({ ...this.state, error }))
     }
 
+    componentWillMount() { this.setState({ sliderValue: 5, data: new Map() }) }
+
+    componentDidMount() { this.getEvents() }
+
     render() {
         return (
-            <ResponsiveContainer width="100%" height={250} >
-                <BarChart />
-            </ResponsiveContainer>
+            <div>
+                <ResponsiveContainer width="100%" height={250} >
+                    <BarChart data={Array.from(this.state.data)}>
+                        <CartesianGrid />
+                        <Tooltip />
+                        <XAxis dataKey="0" />
+                        <Bar dataKey="1" fill="#37474f" />
+                    </BarChart>
+                </ResponsiveContainer>
+                <Slider
+                    min={2}
+                    max={25}
+                    stepSize={1}
+                    labelStepSize={4}
+                    onChange={sliderValue => this.setState({ ...this.state, sliderValue })}
+                    onRelease={_ => this.getEvents()}
+                    value={this.state.sliderValue}
+                // vertical={vertical}
+                />
+            </div>
         )
     }
 }
