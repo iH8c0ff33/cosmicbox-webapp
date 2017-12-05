@@ -4,19 +4,19 @@ import { getEventBins } from "../api/event"
 import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, ResponsiveContainer } from "recharts"
 import { Slider } from "@blueprintjs/core"
 
-interface BinsChartProps {
+interface Props {
     sample: string
     // start: Date
     stop: Date
 }
 
-interface BinsChartState {
+interface State {
     bins: Bin[]
     error: Error
     sliderValue: number
 }
 
-export class RealTimeChart extends React.Component<BinsChartProps, BinsChartState> {
+export class RealTimeChart extends React.Component<Props, State> {
     getEvents() {
         getEventBins(
             `${this.state.sliderValue}s`,

@@ -38,5 +38,5 @@ export class Bin {
         }
     }
 
-    constructor(public start: Date, public count: Number) { }
+    constructor(public start: Date, public count: number) { }
 }
