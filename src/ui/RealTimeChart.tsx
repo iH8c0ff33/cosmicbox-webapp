@@ -16,7 +16,7 @@ interface BinsChartState {
     sliderValue: number
 }
 
-export class BinsChart extends React.Component<BinsChartProps, BinsChartState> {
+export class RealTimeChart extends React.Component<BinsChartProps, BinsChartState> {
     getEvents() {
         getEventBins(
             `${this.state.sliderValue}s`,
