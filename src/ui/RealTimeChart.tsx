@@ -2,7 +2,7 @@ import * as React from "react"
 import { Bin } from "../api/type/event"
 import { getEventBins } from "../api/event"
 import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, ResponsiveContainer } from "recharts"
-import { Slider } from "@blueprintjs/core"
+import { Slider, Checkbox } from "@blueprintjs/core"
 
 interface Props {
     sample: string
@@ -14,6 +14,7 @@ interface State {
     bins: Bin[]
     error: Error
     sliderValue: number
+    active: boolean
 }
 
 export class RealTimeChart extends React.Component<Props, State> {
@@ -25,15 +26,19 @@ export class RealTimeChart extends React.Component<Props, State> {
         )
             .then(bins => {
                 this.setState({ ...this.state, bins: bins.slice(1) })
-                setTimeout(() => this.getEvents(), 300)
             })
             .catch(error => this.setState({ ...this.state, error }))
     }
 
-    componentWillMount() { this.setState({ bins: [], sliderValue: 10 }) }
+    componentWillMount() { this.setState({ bins: [], sliderValue: 10, active: true }) }
 
     componentDidMount() {
         this.getEvents()
+    }
+
+    componentDidUpdate() {
+        if (this.state.active)
+            setTimeout(() => this.getEvents(), 300)
     }
 
     render() {
@@ -61,6 +66,10 @@ export class RealTimeChart extends React.Component<Props, State> {
                     onChange={sliderValue => this.setState({ ...this.state, sliderValue })}
                     value={this.state.sliderValue}
                 // vertical={vertical}
+                />
+                <Checkbox
+                    checked={this.state.active}
+                    onChange={x => this.setState({ ...this.state, active: x.currentTarget.checked })}
                 />
             </div>
         )
