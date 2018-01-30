@@ -1,4 +1,4 @@
-export const baseURL = "http://eee.lsgalfer.it/api"
+export const baseURL = "https://eee.lsgalfer.it/api"
 
 export const eventURL = `${baseURL}/event`
 
