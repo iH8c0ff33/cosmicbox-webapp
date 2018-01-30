@@ -1,5 +1,6 @@
 {
   "name": "cosmicbox-webapp",
+  "homepage": "https://eee.lsgalfer.it/dashboard",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
