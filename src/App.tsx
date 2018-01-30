@@ -15,7 +15,7 @@ class App extends React.Component {
         </nav>
         <div className="container">
           <h2>Real Time Events</h2>
-          <RealTimeChart sample="30s" stop={new Date("2018/01/01")} />
+          <RealTimeChart sample="30s" stop={new Date(new Date().getTime() + 86400000)} />
           <h2>Frequency Histogram</h2>
           <BinsChart />
         </div>
