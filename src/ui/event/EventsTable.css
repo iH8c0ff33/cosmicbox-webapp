@@ -1,0 +1,9 @@
+.EventsTable {
+  margin-bottom: 0;
+  max-height: 250px;
+  overflow-y: scroll;
+}
+
+.EventsTable .table {
+  margin-bottom: 0;
+}
