@@ -18,13 +18,16 @@ import {
 } from "bloomer"
 import * as React from "react"
 
-import { getAuthURL } from "./api/auth/service"
-import { withEventCount, withEventStream } from "./api/wrapper/Event"
+import { getAuthURL, getToken } from "./api/auth/service"
+import { eventStreamWS } from "./api/url"
+import { MultiWebSocket, withEventCount, withEventStream } from "./api/wrapper/Event"
 import { EventCountBox } from "./ui/event/EventCountBox"
 import { EventsCard } from "./ui/event/EventsCard"
 
+const multiWebSocket = new MultiWebSocket(eventStreamWS, getToken() || undefined)
+
 const EventCount = withEventCount(EventCountBox)
-const EventStream = withEventStream(EventsCard)
+const EventStream = withEventStream(EventsCard, multiWebSocket)
 
 class App extends React.Component {
   render() {
