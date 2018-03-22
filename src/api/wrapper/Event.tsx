@@ -9,7 +9,7 @@ export class MultiWebSocket {
   private websocket?: WebSocket
   private handlers: MessageHandler[]
 
-  constructor(private url: string, private protocols?: string | string[]) {
+  constructor(private url: string) {
     this.handlers = []
   }
 
@@ -30,7 +30,7 @@ export class MultiWebSocket {
 
   private init() {
     if (this.websocket != null) this.websocket.close()
-    this.websocket = new WebSocket(this.url, this.protocols)
+    this.websocket = new WebSocket(this.url)
     this.websocket.onmessage = message =>
       this.handlers.forEach(handler =>
         handler.apply(this.websocket, [message])
@@ -42,29 +42,41 @@ interface EventCountProps {
   count: number
 }
 
-export function withEventCount<P extends EventCountProps>(Component: React.ComponentType<P>) {
+export function withEventCount<P extends EventCountProps>(Component: React.ComponentType<P>, ws: MultiWebSocket) {
   interface State {
     count: number
   }
 
   return class extends React.Component<{}, State> {
+    private handler: MessageHandler
+
     constructor(props: {}) {
       super(props)
 
       this.state = {
         count: -1
       }
+
+      this.handler = _ => this.count()
     }
 
     componentDidMount() { this.getCount() }
 
-    componentDidUpdate() {
-      setTimeout(this.getCount.bind(this), process.env.NODE_ENV === "production" ? 60 : 5 * 1000)
+    componentWillUnmount() { ws.removeHandler(this.handler) }
+
+    getCount() {
+      getEventsCount().then(count => {
+        this.setState({ count })
+        ws.addHandler(this.handler)
+        setTimeout(this.getCount.bind(this), 60 * 1000)
+      })
     }
 
-    getCount() { getEventsCount().then(count => this.setState({ count })) }
-
     render() { return <Component count={this.state.count} /> }
+
+    private count() {
+      this.setState({ ...this.state, count: this.state.count + 1 })
+    }
   }
 }
 
