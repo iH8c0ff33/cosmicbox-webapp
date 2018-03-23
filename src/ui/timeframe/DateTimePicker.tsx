@@ -68,7 +68,7 @@ export default class extends React.Component<Props, State> {
 
   private write(part: Part, value: string) {
     const valid = value.length > 0 &&
-      (part === "date" ? !isNaN(Date.parse(value)) : !isNaN(Date.parse(`01/01/1970 ${value}`)))
+      (part === "date" ? !isNaN(Date.parse(`${value} 5:46 PM`)) : !isNaN(Date.parse(`01/01/1970 ${value}`)))
 
     this.setState({
       ...this.state,
