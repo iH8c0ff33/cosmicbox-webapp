@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { getEventsCount } from "../event"
+import { getEventsCount, getPressureAvg } from "../event"
 import { Event } from "../type/event"
 
 type MessageHandler = (this: WebSocket, ev: MessageEvent) => void
@@ -60,14 +60,16 @@ export function withEventCount<P extends EventCountProps>(Component: React.Compo
       this.handler = _ => this.count()
     }
 
-    componentDidMount() { this.getCount() }
+    componentDidMount() {
+      this.getCount()
+      ws.addHandler(this.handler)
+    }
 
     componentWillUnmount() { ws.removeHandler(this.handler) }
 
     getCount() {
       getEventsCount().then(count => {
         this.setState({ count })
-        ws.addHandler(this.handler)
         setTimeout(this.getCount.bind(this), 60 * 1000)
       })
     }
@@ -75,6 +77,8 @@ export function withEventCount<P extends EventCountProps>(Component: React.Compo
     render() { return <Component count={this.state.count} /> }
 
     private count() {
+      // tslint:disable-next-line
+      console.log(`c: ${this.state.count}`)
       this.setState({ ...this.state, count: this.state.count + 1 })
     }
   }
@@ -114,6 +118,41 @@ export function withEventStream<P extends EventStreamProps>(Component: React.Com
       this.setState({
         ...this.state,
         events: [Event.parse(data), ...this.state.events.slice(0, MAX_EVENTS - 1)]
+      })
+    }
+  }
+}
+
+interface PressureAvgProps {
+  avg: number
+}
+
+export function withPressureAvg<P extends PressureAvgProps>(Component: React.ComponentType<P>) {
+  interface State {
+    avg: number
+  }
+
+  return class extends React.Component<{}, State> {
+    constructor(props: {}) {
+      super(props)
+
+      this.state = { avg: -1 }
+    }
+
+    componentDidMount() { this.getAvg() }
+
+    componentDidUpdate() {
+      setTimeout(this.getAvg.bind(this), process.env.NODE_ENV === "production" ? 60 : 5 * 1000)
+    }
+
+    render() { return <Component avg={this.state.avg} /> }
+
+    private async getAvg() {
+      this.setState({
+        avg: await getPressureAvg(
+          new Date(new Date().setHours(-24)),
+          new Date()
+        )
       })
     }
   }

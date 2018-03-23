@@ -11,6 +11,7 @@ export const eventURL = `${apiURL}/event`
 export const eventsCountURL = `${eventURL}/count`
 export const eventBinsURL = `${eventURL}/bins`
 export const eventRangeURL = `${eventURL}/range`
+export const pressureAvgURL =  `${eventURL}/press`
 
 export const wsBaseURL = process.env.NODE_ENV === "production" ?
   "wss://eee.lsgalfer.it" :

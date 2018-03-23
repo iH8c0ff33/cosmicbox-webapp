@@ -24,15 +24,18 @@ import {
   MultiWebSocket,
   withEventCount,
   withEventStream,
+  withPressureAvg
 } from "./api/wrapper/Event"
 import { EventCountBox } from "./ui/event/EventCountBox"
 import { EventsCard } from "./ui/event/EventsCard"
 import DownloadData from "./ui/timeframe/DownloadData"
+import Pressure from "./ui/event/PressureAvg"
 
 const multiWebSocket = new MultiWebSocket(eventStreamWS + `?access_token=${escape(getToken() || "")}`)
 
 const EventCount = withEventCount(EventCountBox, multiWebSocket)
 const EventStream = withEventStream(EventsCard, multiWebSocket)
+const PressAvg = withPressureAvg(Pressure)
 
 class App extends React.Component {
   render() {
@@ -68,19 +71,16 @@ class App extends React.Component {
             <Tile isParent>
               <Tile isChild>
                 <Box>
-                  <Title>97%</Title>
+                  <a href={getAuthURL()}>
+                    <Title>97%</Title>
+                  </a>
                   <Subtitle>Hit rate</Subtitle>
                 </Box>
               </Tile>
             </Tile>
             <Tile isParent>
               <Tile isChild>
-                <Box>
-                  <a href={getAuthURL()}>
-                    <Title>954 hPa</Title>
-                  </a>
-                  <Subtitle>Avg. press.</Subtitle>
-                </Box>
+                <PressAvg />
               </Tile>
             </Tile>
           </Tile>
