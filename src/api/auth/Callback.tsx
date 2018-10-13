@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { setToken } from "./service"
+import { dashboardURL } from "../url"
 
 export default class extends React.Component {
   componentDidMount() {
@@ -12,7 +13,7 @@ export default class extends React.Component {
     if (responseType === "token" && token != null)
       setToken(token)
 
-    location.replace("/")
+    location.replace(dashboardURL + "/")
   }
 
   render() { return null }
