@@ -1,15 +1,17 @@
-FROM node:9.4-alpine as build
+FROM node:10.12-alpine as build
 
 WORKDIR /app
+
 ADD package.json /app
-RUN npm install --verbose
+ADD yarn.lock /app
+RUN yarn
 
-ADD public /app/public
-ADD src /app/src
-ADD tsconfig.json /app
+ADD . /app
 
-RUN npm run build
+RUN yarn build
 
-FROM nginx:1.13-alpine
+FROM nginx:1.15-alpine
+
+LABEL maintainer="Daniele Monteleone <daniele.monteleone.it@gmail.com"
 
 COPY --from=build /app/build /usr/share/nginx/html

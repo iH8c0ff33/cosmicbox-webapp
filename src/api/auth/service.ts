@@ -15,6 +15,6 @@ export const callAPI = (input: RequestInfo, init?: RequestInit) => fetch(input, 
   ...init,
   headers: {
     ...(init != null ? init.headers : null),
-    "Authorization": `Bearer ${getToken() || login()}`
+    "Authorization": `Bearer ${getToken() || ""}`
   }
 })
