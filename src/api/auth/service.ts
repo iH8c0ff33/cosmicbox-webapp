@@ -1,9 +1,9 @@
-import { loginURL } from "../url"
+import { loginURL, callbackURL } from "../url"
 
 const AUTH_TOKEN_KEY = "aat"
 
 export const getAuthURL = () =>
-  `${loginURL}?redirect_uri=${escape(`${location.origin}/callback`)}&response_type=token`
+  `${loginURL}?redirect_uri=${escape(callbackURL)}&response_type=token`
 
 export const login = () => location.replace(getAuthURL())
 
