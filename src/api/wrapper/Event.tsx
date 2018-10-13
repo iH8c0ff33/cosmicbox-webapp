@@ -142,7 +142,7 @@ export function withPressureAvg<P extends PressureAvgProps>(Component: React.Com
     componentDidMount() { this.getAvg() }
 
     componentDidUpdate() {
-      setTimeout(this.getAvg.bind(this), process.env.NODE_ENV === "production" ? 60 : 5 * 1000)
+      setTimeout(this.getAvg.bind(this), (process.env.NODE_ENV === "production" ? 60 : 5) * 1000)
     }
 
     render() { return <Component avg={this.state.avg} /> }
