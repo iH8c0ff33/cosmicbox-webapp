@@ -1,7 +1,7 @@
 {
   "name": "cosmicbox-webapp",
   "homepage": "https://eee.lsgalfer.it/dashboard",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "dependencies": {
     "bloomer": "^0.6.3",
