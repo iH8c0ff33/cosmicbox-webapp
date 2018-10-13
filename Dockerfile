@@ -14,4 +14,5 @@ FROM nginx:1.15-alpine
 
 LABEL maintainer="Daniele Monteleone <daniele.monteleone.it@gmail.com"
 
+COPY default.conf /etc/nginx/conf.d
 COPY --from=build /app/build /usr/share/nginx/html
