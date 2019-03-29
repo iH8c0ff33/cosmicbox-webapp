@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardContent,
   CardFooter,
@@ -18,18 +17,20 @@ import { eventRangeURL } from "../../api/url"
 import { getToken, login } from "../../api/auth/service"
 
 import Picker from "./DateTimePicker"
+import DeleteModal from "./DeleteModal"
 
 interface State {
   start?: Date
   end?: Date
   format?: string
+  deleteActive: boolean
 }
 
 export default class extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props)
 
-    this.state = {}
+    this.state = { deleteActive: false }
   }
 
   render() {
@@ -56,22 +57,26 @@ export default class extends React.Component<{}, State> {
             </FieldBody>
           </Field>
         </CardContent>
-        <CardFooter>
-          <CardFooterItem>
-            <Button
-              disabled={this.state.start == null || this.state.end == null}
-              isColor="primary"
-              onClick={() => this.onDownload()}
-            >
-              Download
-            </Button>
+        <CardFooter isHidden={this.state.start == null || this.state.end == null}>
+          <CardFooterItem href="#" onClick={() => this.onDownload()}>
+            Download
+          </CardFooterItem>
+          <CardFooterItem hasTextColor="danger" href="#" onClick={() => this.onDelete(true)}>
+            Delete
           </CardFooterItem>
         </CardFooter>
+        <DeleteModal
+          isActive={this.state.deleteActive}
+          start={this.state.start}
+          end={this.state.end}
+          onEnd={this.onDelete.bind(this, false)}
+        />
       </Card>
     )
   }
 
   private onDownload() {
+    if (this.state.start == null || this.state.end == null) return
     const params = new URLSearchParams
     if (this.state.start != null && this.state.end != null) {
       params.set("start", this.state.start.toJSON())
@@ -81,5 +86,9 @@ export default class extends React.Component<{}, State> {
     }
 
     window.open(`${eventRangeURL}?${params}`)
+  }
+
+  private onDelete(state: boolean) {
+    this.setState({ deleteActive: state })
   }
 }
