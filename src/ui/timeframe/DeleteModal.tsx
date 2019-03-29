@@ -34,15 +34,15 @@ export default class extends React.Component<Props, {}> {
             {String(this.props.start)} till {String(this.props.end)}?
           </ModalCardBody>
           <ModalCardFooter>
-            <Button isColor="success">No</Button>
-            <Button isColor="warning" onClick={() => this.onYes()}>Yes</Button>
+            <Button isColor="success" onClick={() => this.close()}>No</Button>
+            <Button isColor="warning" onClick={() => this.close()}>Yes</Button>
           </ModalCardFooter>
         </ModalCard>
       </Modal>
     )
   }
 
-  private onYes() {
+  private close() {
     this.props.onEnd()
   }
 }
