@@ -11,6 +11,10 @@ export const apiURL = `${baseURL}/api`
 
 export const loginURL = `${baseURL}/login`
 
+export const userURL = `${apiURL}/user`
+
+export const csrfTokenURL = `${userURL}/token/csrf`
+
 export const eventURL = `${apiURL}/event`
 
 export const eventsCountURL = `${eventURL}/count`
