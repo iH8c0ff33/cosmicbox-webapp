@@ -15,6 +15,7 @@ import {
   Subtitle,
   Tile,
   Title,
+  NavbarEnd,
 } from "bloomer"
 import * as React from "react"
 
@@ -50,6 +51,11 @@ class App extends React.Component {
               <NavbarStart>
                 <NavbarItem>Home</NavbarItem>
               </NavbarStart>
+              <NavbarEnd>
+                <NavbarItem>
+                  <a href={getAuthURL()}>Login</a>
+                </NavbarItem>
+              </NavbarEnd>
             </NavbarMenu>
           </Container>
         </Navbar>
@@ -71,10 +77,8 @@ class App extends React.Component {
             <Tile isParent>
               <Tile isChild>
                 <Box>
-                  <a href={getAuthURL()}>
-                    <Title>97%</Title>
-                  </a>
-                  <Subtitle>Hit rate</Subtitle>
+                  <Title>100s</Title>
+                  <Subtitle>TSLE</Subtitle>
                 </Box>
               </Tile>
             </Tile>
