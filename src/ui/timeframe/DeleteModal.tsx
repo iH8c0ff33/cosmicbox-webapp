@@ -5,6 +5,7 @@ import {
   ModalCardBody, ModalCardFooter,
   Button, Delete
 } from "bloomer"
+import { deleteEventRange } from "src/api/event"
 
 type CloseHandler = () => void
 
@@ -16,8 +17,9 @@ interface Props {
 }
 
 export default class extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props)
+  static defaultProps = {
+    start: new Date(),
+    end: new Date()
   }
 
   render() {
@@ -35,7 +37,7 @@ export default class extends React.Component<Props, {}> {
           </ModalCardBody>
           <ModalCardFooter>
             <Button isColor="success" onClick={() => this.close()}>No</Button>
-            <Button isColor="warning" onClick={() => this.close()}>Yes</Button>
+            <Button isColor="warning" onClick={async () => await this.delete()}>Yes</Button>
           </ModalCardFooter>
         </ModalCard>
       </Modal>
@@ -44,5 +46,10 @@ export default class extends React.Component<Props, {}> {
 
   private close() {
     this.props.onEnd()
+  }
+
+  private async delete() {
+    await deleteEventRange(this.props.start, this.props.end)
+    this.close()
   }
 }
