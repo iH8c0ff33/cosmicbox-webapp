@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dashboard
@@ -6,6 +6,9 @@ metadata:
   labels:
     app: dashboard
 spec:
+  selector:
+    matchLabels:
+      app: dashboard
   template:
     metadata:
       namespace: cosmicbox
@@ -13,7 +16,7 @@ spec:
         app: dashboard
     spec:
       containers:
-        - image: danielemonteleone/cosmicbox-webapp:0.1.0
+        - image: danielemonteleone/cosmicbox-webapp:v0.2.0
           name: dashboard
           resources:
             requests:
@@ -23,8 +26,8 @@ spec:
             - containerPort: 80
               name: http
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: dashboard
   namespace: cosmicbox
@@ -41,13 +44,15 @@ metadata:
   name: dashboard
   namespace: cosmicbox
   annotations:
-    kubernetes.io/tls-acme: 'true'
     kubernetes.io/ingress.class: nginx
+    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
+    kubernetes.io/tls-acme: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   tls:
     - hosts:
-      - eee.lsgalfer.it
+        - eee.lsgalfer.it
+      secretName: eee-lsgalfer-it-cert
   rules:
     - host: eee.lsgalfer.it
       http:
